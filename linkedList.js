@@ -1,74 +1,84 @@
 class Node {
     constructor(data) {
-      this.data = data;
-      this.next = null;
+        this.data = data;
+        this.prev = null;
+        this.next = null;
     }
-  }
+}
 
-class LinkedList {
+class DoublyLinkedList {
     constructor() {
         this.head = null;
+        this.tail = null;
     }
 
     append(data) {
         const newNode = new Node(data);
-        if (!this.head) {
-        this.head = newNode;
-        return;
-        }
 
-        let current = this.head;
-        while (current.next) {
-        current = current.next;
+        if (!this.head) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            newNode.prev = this.tail;
+            this.tail.next = newNode;
+            this.tail = newNode;
         }
-        current.next = newNode;
+    }
+
+    prepend(data) {
+        const newNode = new Node(data);
+
+        if (!this.head) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            newNode.next = this.head;
+            this.head.prev = newNode;
+            this.head = newNode;
+        }
     }
 
     printList() {
         let current = this.head;
         while (current) {
-        console.log(current.data);
-        current = current.next;
+            console.log(current.data);
+            current = current.next;
         }
     }
+
     size() {
-        let count = 0; 
+        let count = 0;
         let node = this.head;
         while (node) {
             count++;
-            node = node.next
+            node = node.next;
         }
         return count;
     }
 
     clear() {
         this.head = null;
-    }
-
-    getLast() {
-        let lastNode = this.head;
-        if (lastNode) {
-            while (lastNode.next) {
-                lastNode = lastNode.next
-            }
-        }
-        return lastNode
+        this.tail = null;
     }
 
     getFirst() {
-        return this.head.data;
+        return this.head ? this.head.data : null;
     }
 
+    getLast() {
+        return this.tail ? this.tail.data : null;
+    }
+
+    // Additional methods can be added for specific functionality, such as insertion, deletion, etc.
 }
 
 // Example Usage:
-const linkedList = new LinkedList();
-linkedList.append(10);
-linkedList.append(20);
-linkedList.append(30);
+const doublyList = new DoublyLinkedList();
+doublyList.append(10);
+doublyList.append(20);
+doublyList.prepend(5); // Prepend 5 to the beginning
 
-linkedList.printList(); // Output: 10, 20, 30
-console.log( linkedList.getFirst());; 
-console.log( linkedList.size());; 
-  
-  
+doublyList.printList(); // Output: 5, 10, 20
+console.log(doublyList.getFirst()); // Output: 5
+console.log(doublyList.getLast()); // Output: 20
+console.log(doublyList.size()); // Output: 3
